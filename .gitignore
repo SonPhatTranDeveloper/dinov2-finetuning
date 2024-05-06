@@ -1,2 +1,5 @@
 .idea
-imagenet/data
+imagenet-baseline/data
+imagenet-baseline/pretrained
+imagenet-sinkhorn/data
+imagenet-sinkhorn/pretraied
