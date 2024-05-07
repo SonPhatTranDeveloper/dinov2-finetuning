@@ -60,7 +60,7 @@ def train(model, datasets, dataloaders, args, device):
         val_loss_array.append(epoch_val_loss)
         train_loss_array.append(epoch_loss)
 
-        # Save the training and validation result
+        # Save the training and validation model
         losses = np.asarray([train_loss_array, val_loss_array, train_accuracy_array, val_accuracy_array])
         np.save(stats_save_address, losses)
 

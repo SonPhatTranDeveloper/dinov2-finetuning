@@ -63,7 +63,7 @@ class SinkhornDistanceFast(nn.Module):
             if err.item() < threshold:
                 break
 
-        # Calculate the result pi
+        # Calculate the model pi
         pi = torch.exp(self.modified_cost(cost, u, v))
         return pi
 

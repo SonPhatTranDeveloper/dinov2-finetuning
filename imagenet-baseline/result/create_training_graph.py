@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 
 if __name__ == "__main__":
-    # Load result
+    # Load model
     result = np.load("results.npy")
 
     # Extract training and testing
