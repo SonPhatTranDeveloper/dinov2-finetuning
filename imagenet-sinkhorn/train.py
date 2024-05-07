@@ -130,8 +130,7 @@ if __name__ == "__main__":
     # Create model
     model = DINOClassificationModel(
         hidden_size=ARGS["hidden_size"],
-        num_classes=ARGS["num_classes"],
-        pretrained="./pretrained/dinov2_vits14_reg4_pretrain.pth"
+        num_classes=ARGS["num_classes"]
     )
 
     # Create training pipeline

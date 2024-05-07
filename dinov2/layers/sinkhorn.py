@@ -117,17 +117,16 @@ class ScaledProductAttentionSinkhorn(nn.Module):
 
         # Mapping the input to (query, key, value)
         # no bias
-        self.map_to_qkv = nn.Linear(in_features=self.dim, out_features=self.dim * 3, bias=qkv_bias)
+        self.qkv = nn.Linear(in_features=self.dim, out_features=self.dim * 3, bias=qkv_bias)
 
         # Create attention dropout layer
-        self.attention_dropout = nn.Dropout(attn_drop)
+        self.attn_drop = nn.Dropout(attn_drop)
 
         # Output projection if any
         # else it is just an identity layer
-        self.map_to_output = nn.Sequential(
-            nn.Linear(self.dim, self.dim, bias=proj_bias),
-            nn.Dropout(p=self.p_dropout)
-        )
+        self.proj = nn.Linear(self.dim, self.dim, bias=proj_bias)
+        self.proj_drop = nn.Dropout(p=self.p_dropout)
+
 
     def forward(self, inputs):
         """
@@ -139,7 +138,7 @@ class ScaledProductAttentionSinkhorn(nn.Module):
         B, N, C = inputs.shape
 
         # Calculate q, k, and v values
-        qkv = self.map_to_qkv(inputs).reshape(B, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
+        qkv = self.qkv(inputs).reshape(B, N, 3, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
         q, k, v = qkv[0], qkv[1], qkv[2]
 
         # Calculate the attention scores and weights
@@ -157,7 +156,7 @@ class ScaledProductAttentionSinkhorn(nn.Module):
         attention_weights = attention_weights.view(attention_score_shape)
 
         # Go through attention dropout
-        attention_weights = self.attention_dropout(attention_weights)
+        attention_weights = self.attn_drop(attention_weights)
 
         # Calculate the output
         # output has size (batch_size, number_of_heads, number_of_patches, dim_head)
@@ -169,7 +168,8 @@ class ScaledProductAttentionSinkhorn(nn.Module):
 
         # Map to output
         # outputs has size (batch_size, number_of_batches, d_model)
-        outputs = self.map_to_output(outputs)
+        outputs = self.proj(outputs)
+        outputs = self.proj_drop(outputs)
 
         # Return outputs and attention weights
         return outputs
