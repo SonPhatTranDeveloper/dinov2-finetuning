@@ -39,7 +39,7 @@ def train(model, datasets, dataloaders, args, device):
 
     # Model save directory
     stats_save_dir = args["save_dir"]
-    stats_save_address = stats_save_dir + '/results.npy'
+    stats_save_address = stats_save_dir + '/first_iteration_result.npy'
 
     # Train & Validate
     for epoch in range(1, args["epochs"] + 1):

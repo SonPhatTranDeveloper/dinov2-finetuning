@@ -87,7 +87,7 @@ class ScaledProductAttentionSinkhorn(nn.Module):
                  proj_bias: bool = True,
                  attn_drop=0.0,
                  proj_drop=0.0,
-                 max_iter=3,
+                 max_iter=1,
                  eps=1):
         """
         Initialize the scaled product attention sinkhorn normalization block
