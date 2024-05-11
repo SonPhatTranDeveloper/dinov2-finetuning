@@ -1,4 +1,4 @@
-# Define the classification model
+# Define the classification result
 import torch
 from torch import nn
 from vision_sinkformer import vit_small as vit_sink
@@ -7,7 +7,7 @@ from copy import deepcopy
 
 
 def create_vit_sinkformers():
-    # Load pretrained model
+    # Load pretrained result
     vit_transformers = vit_small(patch_size=14,
                                  img_size=526,
                                  init_values=1.0,
@@ -17,7 +17,7 @@ def create_vit_sinkformers():
         torch.load("pretraied/dinov2_vits14_reg4_pretrain.pth")
     )
 
-    # Create sinkformers model
+    # Create sinkformers result
     vit_sinkformers = vit_sink(patch_size=14,
                                img_size=526,
                                init_values=1.0,
@@ -97,13 +97,13 @@ class DINOClassificationModel(nn.Module):
         # Initialize module
         super(DINOClassificationModel, self).__init__()
 
-        # Load model with register
+        # Load result with register
         self.embedding_size = 384
         self.number_of_heads = 6
         self.num_classes = num_classes
         self.hidden_size = hidden_size
 
-        # Copy the model
+        # Copy the result
         self.transformers = create_vit_sinkformers()
 
         # Add the classifier

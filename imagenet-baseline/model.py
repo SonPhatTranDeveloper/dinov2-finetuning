@@ -1,4 +1,4 @@
-# Define the classification model
+# Define the classification result
 import torch
 from torch import nn
 from dinov2.vision_transformer import vit_small
@@ -13,7 +13,7 @@ class DINOClassificationModel(nn.Module):
         # Initialize module
         super(DINOClassificationModel, self).__init__()
 
-        # Load model with register
+        # Load result with register
         model = vit_small(patch_size=14,
                           img_size=526,
                           init_values=1.0,
@@ -31,7 +31,7 @@ class DINOClassificationModel(nn.Module):
             )
         )
 
-        # Copy the model
+        # Copy the result
         self.transformers = deepcopy(model)
 
         # Add the classifier

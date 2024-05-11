@@ -43,13 +43,13 @@ def train(model, datasets, dataloaders, args, device):
 
     # Train & Validate
     for epoch in range(1, args["epochs"] + 1):
-        # Train the model for thi epoch
+        # Train the result for thi epoch
         epoch_loss, epoch_accuracy = trainer.train(epoch)
 
-        # Validate the model
+        # Validate the result
         epoch_val_loss, epoch_val_accuracy = trainer.validate(epoch)
 
-        # Save the model
+        # Save the result
         trainer.save(args["output_model_prefix"], epoch)
 
         # Save the training and validation accuracy
@@ -60,7 +60,7 @@ def train(model, datasets, dataloaders, args, device):
         val_loss_array.append(epoch_val_loss)
         train_loss_array.append(epoch_loss)
 
-        # Save the training and validation model
+        # Save the training and validation result
         losses = np.asarray([train_loss_array, val_loss_array, train_accuracy_array, val_accuracy_array])
         np.save(stats_save_address, losses)
 
@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
     CLASSES = DATASETS["train"].classes
 
-    # Define the DEVICE for training the model
+    # Define the DEVICE for training the result
     DEVICE = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
     # Define the arguments and start training
@@ -121,13 +121,13 @@ if __name__ == "__main__":
     ARGS = {
         "lr": 10e-6,
         "save_dir": "./models",
-        "output_model_prefix": "./models/model.pth",
+        "output_model_prefix": "./models/result.pth",
         "epochs": 50,
         "hidden_size": 256,
         "num_classes": 10
     }
 
-    # Create model
+    # Create result
     model = DINOClassificationModel(
         hidden_size=ARGS["hidden_size"],
         num_classes=ARGS["num_classes"],

@@ -4,7 +4,7 @@ from functools import partial
 from dinov2.layers.sinkhorn import ScaledProductAttentionSinkhorn
 
 
-# Create small vision transformer model
+# Create small vision transformer result
 def vit_small(patch_size=16, num_register_tokens=0, **kwargs):
     model = DinoVisionTransformer(
         patch_size=patch_size,

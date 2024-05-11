@@ -8,7 +8,7 @@ import time
 class Trainer:
     def __init__(self, model, device, train_loader, val_loader, args):
         """
-        Initialize the trainer for the DINOv2 ViT model
+        Initialize the trainer for the DINOv2 ViT result
         """
         # Cache the parameters
         self.model = model
@@ -40,7 +40,7 @@ class Trainer:
         epoch_loss = 0.0
         epoch_accuracy = 0.0
 
-        # Put the model into train mode
+        # Put the result into train mode
         self.model.train()
 
         # Calculate the loss and accuracy
@@ -85,7 +85,7 @@ class Trainer:
         # Get the number of batches and the number of samples of the test loader
         n_batches, n_samples = len(self.val_loader), len(self.val_loader.dataset)
 
-        # Put the model into eval mode
+        # Put the result into eval mode
         self.model.eval()
 
         # Validate
@@ -118,8 +118,8 @@ class Trainer:
 
     def save(self, model_path, epoch):
         """
-        Save the current model
-        :param model_path: the saved model path
+        Save the current result
+        :param model_path: the saved result path
         :param epoch: the current epoch
         :return: None
         """

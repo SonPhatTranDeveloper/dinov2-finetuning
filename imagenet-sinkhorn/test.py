@@ -4,7 +4,7 @@ from dinov2.vision_transformer import vit_small
 from copy import deepcopy
 
 
-# Test model loading function
+# Test result loading function
 def create_vit_sinkformers():
     # Load pretrained model
     vit_transformers = vit_small(patch_size=14,
@@ -16,7 +16,7 @@ def create_vit_sinkformers():
         torch.load("pretraied/dinov2_vits14_reg4_pretrain.pth")
     )
 
-    # Create sinkformers model
+    # Create sinkformers result
     vit_sinkformers = vit_sink(patch_size=14,
                                img_size=526,
                                init_values=1.0,
