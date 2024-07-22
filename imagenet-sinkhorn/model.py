@@ -1,12 +1,12 @@
 # Define the classification result
 import torch
 from torch import nn
-from vision_sinkformer import vit_small as vit_sink
+from vision_sinkformer import vit_small_sinkhorn as vit_sink, vit_small_weighted as vit_weighted
 from dinov2.vision_transformer import vit_small
 from copy import deepcopy
 
 
-def create_vit_sinkformers():
+def create_vit_sinkformers(mode="weighted"):
     # Load pretrained result
     vit_transformers = vit_small(patch_size=14,
                                  img_size=526,
@@ -18,11 +18,18 @@ def create_vit_sinkformers():
     )
 
     # Create sinkformers result
-    vit_sinkformers = vit_sink(patch_size=14,
-                               img_size=526,
-                               init_values=1.0,
-                               num_register_tokens=4,
-                               block_chunks=0)
+    if mode == "sink":
+        vit_sinkformers = vit_sink(patch_size=14,
+                                   img_size=526,
+                                   init_values=1.0,
+                                   num_register_tokens=4,
+                                   block_chunks=0)
+    elif mode == "weighted":
+        vit_sinkformers = vit_weighted(patch_size=14,
+                                       img_size=526,
+                                       init_values=1.0,
+                                       num_register_tokens=4,
+                                       block_chunks=0)
 
     # Copy and freeze the weights
     vit_sinkformers.patch_embed.load_state_dict(
@@ -72,18 +79,32 @@ def create_vit_sinkformers():
         attn_transformer = block_transformer.attn
 
         # Copy the weight
-        attn_sinkformer.qkv.load_state_dict(
-            attn_transformer.qkv.state_dict()
-        )
-        attn_sinkformer.attn_drop.load_state_dict(
-            attn_transformer.attn_drop.state_dict()
-        )
-        attn_sinkformer.proj.load_state_dict(
-            attn_transformer.proj.state_dict()
-        )
-        attn_sinkformer.proj_drop.load_state_dict(
-            attn_transformer.proj_drop.state_dict()
-        )
+        if mode == "sink":
+            attn_sinkformer.qkv.load_state_dict(
+                attn_transformer.qkv.state_dict()
+            )
+            attn_sinkformer.attn_drop.load_state_dict(
+                attn_transformer.attn_drop.state_dict()
+            )
+            attn_sinkformer.proj.load_state_dict(
+                attn_transformer.proj.state_dict()
+            )
+            attn_sinkformer.proj_drop.load_state_dict(
+                attn_transformer.proj_drop.state_dict()
+            )
+        elif mode == "weighted":
+            attn_sinkformer.softmax_attn.qkv.load_state_dict(
+                attn_transformer.qkv.state_dict()
+            )
+            attn_sinkformer.softmax_attn.attn_drop.load_state_dict(
+                attn_transformer.attn_drop.state_dict()
+            )
+            attn_sinkformer.softmax_attn.proj.load_state_dict(
+                attn_transformer.proj.state_dict()
+            )
+            attn_sinkformer.softmax_attn.proj_drop.load_state_dict(
+                attn_transformer.proj_drop.state_dict()
+            )
 
     model = deepcopy(vit_sinkformers)
     return model

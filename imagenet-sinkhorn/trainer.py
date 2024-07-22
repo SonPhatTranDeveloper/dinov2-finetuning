@@ -45,6 +45,9 @@ class Trainer:
 
         # Calculate the loss and accuracy
         for image, label in self.train_loader:
+            # Display debug message
+            # print("Processing Image")
+
             # Map image and label to device
             image = image.to(self.device)
             label = label.to(self.device)

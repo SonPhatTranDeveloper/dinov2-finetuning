@@ -1,6 +1,7 @@
 import torch
 from torch import nn as nn
-from einops import rearrange, repeat
+from einops import rearrange
+from dinov2.layers.attention import MemEffAttention
 import numpy as np
 
 
@@ -172,4 +173,66 @@ class ScaledProductAttentionSinkhorn(nn.Module):
         outputs = self.proj_drop(outputs)
 
         # Return outputs and attention weights
+        return outputs
+
+
+class WeightedCombinationAttention(nn.Module):
+    def __init__(self,
+                 dim,
+                 num_heads=8,
+                 qkv_bias: bool = False,
+                 proj_bias: bool = True,
+                 attn_drop=0.0,
+                 proj_drop=0.0,
+                 max_iter=3,
+                 eps=1,
+                 softmax_weight=0.9):
+        """
+        Initialize the scaled product attention sinkhorn normalization block
+        :param dim: the number of features of the input
+        :param num_heads: the number of heads
+        :param d_head: the dimension of each heads
+        :param attn_drop: dropout rate of attention head
+        :param proj_drop: the dropout rate
+        :param max_iter: Sinkhorn iteration
+        :param eps: parameter of Sinkhorn distance
+        """
+
+        # Call the superclass constructor
+        super(WeightedCombinationAttention, self).__init__()
+
+        # Create softmax attention and sinkhorn attention
+        self.softmax_attn = MemEffAttention(dim,
+                                            num_heads,
+                                            qkv_bias,
+                                            proj_bias,
+                                            attn_drop,
+                                            proj_drop
+                                            )
+
+        self.sinkhorn_attn = ScaledProductAttentionSinkhorn(dim,
+                                                            num_heads,
+                                                            qkv_bias,
+                                                            proj_bias,
+                                                            attn_drop,
+                                                            proj_drop,
+                                                            max_iter,
+                                                            eps
+                                                            )
+
+        # Save the weight
+        self.softmax_weight = softmax_weight
+
+    def forward(self, inputs):
+        """
+        Perform the forward operation of scaled product sinkhorn normalization
+        :param inputs: tensor of shape (batch_size, number_of_batches, d_model)
+        :return: outputs: tensor of shape (batch_size, number_of_batches, d_model)
+        """
+        # Calculate the softmax result
+        outputs_softmax = self.softmax_attn(inputs)
+        outputs_sinkhorn = self.sinkhorn_attn(inputs)
+
+        # Calculate the weight combination of them
+        outputs = self.softmax_weight * outputs_softmax + (1 - self.softmax_weight) * outputs_sinkhorn
         return outputs

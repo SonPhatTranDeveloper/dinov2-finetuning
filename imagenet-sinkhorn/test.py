@@ -1,5 +1,5 @@
 import torch
-from vision_sinkformer import vit_small as vit_sink
+from vision_sinkformer import vit_small_sinkhorn as vit_sink
 from dinov2.vision_transformer import vit_small
 from copy import deepcopy
 
