@@ -19,5 +19,5 @@ if __name__ == "__main__":
 
     # Display the plot
     plt.legend()
-    plt.savefig("ImageNet Random 10 classes Accuracy.png")
+    plt.savefig("Sinkhorn Graph.png")
     plt.show()
