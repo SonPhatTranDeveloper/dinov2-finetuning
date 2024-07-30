@@ -135,6 +135,7 @@ class DINOClassificationModel(nn.Module):
         )
 
     def adjust_sinkhorn_weight(self, new_weight):
+        print("Adjust Sinkhorn Weight to: " + str(new_weight))
         for block_sinkformer in self.transformers.blocks:
             block_sinkformer.attn.sinkhorn_weight = new_weight
 

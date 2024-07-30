@@ -6,7 +6,7 @@ from torchvision import datasets, transforms
 
 from helpers import ResizeAndPad
 
-from trainer import Trainer
+from trainer import Trainer, TrainerWeightedInterval
 
 from model import DINOClassificationModel
 
@@ -14,7 +14,7 @@ import numpy as np
 
 
 # Create a train function
-def train(model, datasets, dataloaders, args, device):
+def train(model, datasets, dataloaders, args, device, type="weighted_interval"):
     """
     args: training arguments
     """
@@ -23,13 +23,23 @@ def train(model, datasets, dataloaders, args, device):
     print('Validation dataset of size %d' % len(datasets["valid"]))
 
     # Create trainer
-    trainer = Trainer(
-        model,
-        device,
-        dataloaders["train"],
-        dataloaders["valid"],
-        args
-    )
+    if type == "weighted_interval":
+        trainer = TrainerWeightedInterval(
+            model,
+            device,
+            dataloaders["train"],
+            dataloaders["valid"],
+            args,
+            interval=1
+        )
+    else:
+        trainer = Trainer(
+            model,
+            device,
+            dataloaders["train"],
+            dataloaders["valid"],
+            args
+        )
 
     # Start training
     val_loss_array = []
@@ -139,7 +149,8 @@ if __name__ == "__main__":
         datasets=DATASETS,
         dataloaders=DATALOADERS,
         args=ARGS,
-        device=DEVICE
+        device=DEVICE,
+        type="weighted"
     )
 
 
