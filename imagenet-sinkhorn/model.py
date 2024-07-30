@@ -134,6 +134,10 @@ class DINOClassificationModel(nn.Module):
             nn.Linear(self.hidden_size, self.num_classes)
         )
 
+    def adjust_sinkhorn_weight(self, new_weight):
+        for block_sinkformer in self.transformers.blocks:
+            block_sinkformer.attn.sinkhorn_weight = new_weight
+
     def forward(self, inputs):
         """
         Forward the inputs

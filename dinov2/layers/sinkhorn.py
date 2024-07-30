@@ -128,7 +128,6 @@ class ScaledProductAttentionSinkhorn(nn.Module):
         self.proj = nn.Linear(self.dim, self.dim, bias=proj_bias)
         self.proj_drop = nn.Dropout(p=self.p_dropout)
 
-
     def forward(self, inputs):
         """
         Perform the forward operation of scaled product sinkhorn normalization
@@ -186,7 +185,7 @@ class WeightedCombinationAttention(nn.Module):
                  proj_drop=0.0,
                  max_iter=3,
                  eps=1,
-                 softmax_weight=0.9):
+                 sinkhorn_weight=0.1):
         """
         Initialize the scaled product attention sinkhorn normalization block
         :param dim: the number of features of the input
@@ -221,7 +220,7 @@ class WeightedCombinationAttention(nn.Module):
                                                             )
 
         # Save the weight
-        self.softmax_weight = softmax_weight
+        self.sinkhorn_weight = sinkhorn_weight
 
     def forward(self, inputs):
         """
@@ -234,5 +233,5 @@ class WeightedCombinationAttention(nn.Module):
         outputs_sinkhorn = self.sinkhorn_attn(inputs)
 
         # Calculate the weight combination of them
-        outputs = self.softmax_weight * outputs_softmax + (1 - self.softmax_weight) * outputs_sinkhorn
+        outputs = (1 - self.sinkhorn_weight) * outputs_softmax + self.sinkhorn_weight * outputs_sinkhorn
         return outputs
