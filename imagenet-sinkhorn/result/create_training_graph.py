@@ -19,5 +19,5 @@ if __name__ == "__main__":
 
     # Display the plot
     plt.legend()
-    plt.savefig("Weighted Graph.png")
+    plt.savefig("Weighted Weighted Interval.png")
     plt.show()

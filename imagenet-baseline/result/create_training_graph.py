@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
     # Load result
-    result = np.load("results.npy")
+    result = np.load("baseline.npy")
 
     # Extract training and testing
     train_loss_array, val_loss_array, train_accuracy_array, val_accuracy_array = (
@@ -19,5 +19,5 @@ if __name__ == "__main__":
 
     # Display the plot
     plt.legend()
-    plt.savefig("Sinkhorn Graph.png")
+    plt.savefig("Sinkhorn Weighted Interval.png")
     plt.show()
