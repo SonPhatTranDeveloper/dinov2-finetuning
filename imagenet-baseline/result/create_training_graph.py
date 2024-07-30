@@ -11,6 +11,8 @@ if __name__ == "__main__":
         result
     )
 
+    print(val_accuracy_array)
+
     # Draw the training graph
     epochs = list(range(50))
     plt.plot(epochs, train_accuracy_array, color="blue", linewidth=3, alpha=0.5, label="Train accuracy")
@@ -19,5 +21,5 @@ if __name__ == "__main__":
 
     # Display the plot
     plt.legend()
-    plt.savefig("Sinkhorn Weighted Interval.png")
+    plt.savefig("Sinkhorn Graph.png")
     plt.show()
