@@ -88,6 +88,7 @@ def create_vit_sinkformers(mode="weighted"):
 
         # Copy the weight
         if mode == "sink":
+            # Load Sinkhorn weight
             attn_sinkformer.qkv.load_state_dict(
                 attn_transformer.qkv.state_dict()
             )
@@ -101,6 +102,7 @@ def create_vit_sinkformers(mode="weighted"):
                 attn_transformer.proj_drop.state_dict()
             )
         elif mode == "weighted" or mode == "weighted_learnable":
+            # Load Sinkhorn and attention weight
             attn_sinkformer.softmax_attn.qkv.load_state_dict(
                 attn_transformer.qkv.state_dict()
             )
@@ -111,6 +113,19 @@ def create_vit_sinkformers(mode="weighted"):
                 attn_transformer.proj.state_dict()
             )
             attn_sinkformer.softmax_attn.proj_drop.load_state_dict(
+                attn_transformer.proj_drop.state_dict()
+            )
+
+            attn_sinkformer.sinkhorn_attn.qkv.load_state_dict(
+                attn_transformer.qkv.state_dict()
+            )
+            attn_sinkformer.sinkhorn_attn.attn_drop.load_state_dict(
+                attn_transformer.attn_drop.state_dict()
+            )
+            attn_sinkformer.sinkhorn_attn.proj.load_state_dict(
+                attn_transformer.proj.state_dict()
+            )
+            attn_sinkformer.sinkhorn_attn.proj_drop.load_state_dict(
                 attn_transformer.proj_drop.state_dict()
             )
 
