@@ -132,7 +132,7 @@ if __name__ == "__main__":
         "lr": 10e-6,
         "save_dir": "./result",
         "output_model_prefix": "./result/model.pth",
-        "epochs": 50,
+        "epochs": 25,
         "hidden_size": 256,
         "num_classes": 10
     }
