@@ -38,7 +38,12 @@ def create_vit_sinkformers(mode="weighted"):
                                                  init_values=1.0,
                                                  num_register_tokens=4,
                                                  block_chunks=0)
-
+    else:
+        vit_sinkformers = vit_small(patch_size=14,
+                                    img_size=526,
+                                    init_values=1.0,
+                                    num_register_tokens=4,
+                                    block_chunks=0)
     # Load the weight
     vit_sinkformers.load_state_dict(vit_transformers.state_dict(), strict=False)
 
