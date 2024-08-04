@@ -119,7 +119,7 @@ def create_vit_sinkformers(mode="weighted"):
 
 
 class DINOClassificationModel(nn.Module):
-    def __init__(self, hidden_size, num_classes):
+    def __init__(self, hidden_size, num_classes, mode="weighted"):
         """
         Load the pretrained DINOv2 Classification Model
         """
@@ -133,7 +133,7 @@ class DINOClassificationModel(nn.Module):
         self.hidden_size = hidden_size
 
         # Copy the result
-        self.transformers = create_vit_sinkformers()
+        self.transformers = create_vit_sinkformers(mode=mode)
 
         # Add the classifier
         self.classifier = nn.Sequential(
