@@ -1,7 +1,7 @@
 import torch
 from torch import nn as nn
 from einops import rearrange
-from dinov2.layers.attention import MemEffAttention
+from dinov2.layers.attention import MemEffAttention, Attention
 import numpy as np
 
 
@@ -201,13 +201,13 @@ class WeightedCombinationAttention(nn.Module):
         super(WeightedCombinationAttention, self).__init__()
 
         # Create softmax attention and sinkhorn attention
-        self.softmax_attn = MemEffAttention(dim,
-                                            num_heads,
-                                            qkv_bias,
-                                            proj_bias,
-                                            attn_drop,
-                                            proj_drop
-                                            )
+        self.softmax_attn = Attention(dim,
+                                      num_heads,
+                                      qkv_bias,
+                                      proj_bias,
+                                      attn_drop,
+                                      proj_drop
+                                      )
 
         self.sinkhorn_attn = ScaledProductAttentionSinkhorn(dim,
                                                             num_heads,
