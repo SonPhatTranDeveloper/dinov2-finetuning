@@ -39,6 +39,10 @@ def create_vit_sinkformers(mode="weighted"):
                                                  num_register_tokens=4,
                                                  block_chunks=0)
 
+    # Load the weight
+    vit_sinkformers.load_state_dict(vit_transformers.state_dict(), strict=False)
+
+    '''
     # Copy and freeze the weights
     vit_sinkformers.patch_embed.load_state_dict(
         vit_transformers.patch_embed.state_dict()
@@ -51,8 +55,10 @@ def create_vit_sinkformers(mode="weighted"):
     vit_sinkformers.head.load_state_dict(
         vit_transformers.head.state_dict()
     )
+    '''
 
     for block_sinkformer, block_transformer in zip(vit_sinkformers.blocks, vit_transformers.blocks):
+        '''
         # Load the other weights
         block_sinkformer.norm1.load_state_dict(
             block_transformer.norm1.state_dict()
@@ -81,6 +87,9 @@ def create_vit_sinkformers(mode="weighted"):
         block_sinkformer.drop_path2.load_state_dict(
             block_transformer.drop_path2.state_dict()
         )
+        '''
+
+        block_sinkformer.load_state_dict(block_transformer.state_dict(), strict=False)
 
         # Get the attention module
         attn_sinkformer = block_sinkformer.attn
