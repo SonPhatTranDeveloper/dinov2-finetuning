@@ -8,7 +8,7 @@ from dinov2.vision_transformer import vit_small
 from copy import deepcopy
 
 
-def create_vit_sinkformers(mode="weighted_learnable"):
+def create_vit_sinkformers(mode="weighted"):
     # Load pretrained result
     vit_transformers = vit_small(patch_size=14,
                                  img_size=526,
@@ -100,7 +100,7 @@ def create_vit_sinkformers(mode="weighted_learnable"):
             attn_sinkformer.proj_drop.load_state_dict(
                 attn_transformer.proj_drop.state_dict()
             )
-        elif mode == "weighted":
+        elif mode == "weighted" or mode == "weighted_learnable":
             attn_sinkformer.softmax_attn.qkv.load_state_dict(
                 attn_transformer.qkv.state_dict()
             )
