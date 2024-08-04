@@ -14,7 +14,7 @@ import numpy as np
 
 
 # Create a train function
-def train(model, datasets, dataloaders, args, device, type="weighted_interval"):
+def train(model, datasets, dataloaders, args, device, type="none"):
     """
     args: training arguments
     """
@@ -149,7 +149,8 @@ if __name__ == "__main__":
         datasets=DATASETS,
         dataloaders=DATALOADERS,
         args=ARGS,
-        device=DEVICE
+        device=DEVICE,
+        type="none"
     )
 
 
