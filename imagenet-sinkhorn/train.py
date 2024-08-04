@@ -141,7 +141,7 @@ if __name__ == "__main__":
     model = DINOClassificationModel(
         hidden_size=ARGS["hidden_size"],
         num_classes=ARGS["num_classes"],
-        mode="baseline"
+        mode="weighted"
     )
 
     # Create training pipeline
