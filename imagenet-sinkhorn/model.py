@@ -1,12 +1,14 @@
 # Define the classification result
 import torch
 from torch import nn
-from vision_sinkformer import vit_small_sinkhorn as vit_sink, vit_small_weighted as vit_weighted
+from vision_sinkformer import (vit_small_sinkhorn as vit_sink,
+                               vit_small_weighted as vit_weighted,
+                               vit_small_weighted_learnable as vit_weighted_learnable)
 from dinov2.vision_transformer import vit_small
 from copy import deepcopy
 
 
-def create_vit_sinkformers(mode="weighted"):
+def create_vit_sinkformers(mode="weighted_learnable"):
     # Load pretrained result
     vit_transformers = vit_small(patch_size=14,
                                  img_size=526,
@@ -30,6 +32,12 @@ def create_vit_sinkformers(mode="weighted"):
                                        init_values=1.0,
                                        num_register_tokens=4,
                                        block_chunks=0)
+    elif mode == "weighted_learnable":
+        vit_sinkformers = vit_weighted_learnable(patch_size=14,
+                                                 img_size=526,
+                                                 init_values=1.0,
+                                                 num_register_tokens=4,
+                                                 block_chunks=0)
 
     # Copy and freeze the weights
     vit_sinkformers.patch_embed.load_state_dict(
