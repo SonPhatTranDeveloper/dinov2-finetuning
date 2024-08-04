@@ -149,8 +149,7 @@ if __name__ == "__main__":
         datasets=DATASETS,
         dataloaders=DATALOADERS,
         args=ARGS,
-        device=DEVICE,
-        type="weighted"
+        device=DEVICE
     )
 
 
